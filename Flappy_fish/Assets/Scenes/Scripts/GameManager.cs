@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,44 +8,46 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject startButton;
-    public Player player;
-
-    public TMP_Text gameOverCountdown;
-    public float countTimer = 5;
+    public GameObject startButton;        // Кнопка для начала игры
+    public GameObject restartButton;     // Кнопка для рестарта
+    public Player player;                // Ссылка на игрока
 
     // Start is called before the first frame update
     void Start()
     {
-        gameOverCountdown.gameObject.SetActive(false);
-        Time.timeScale = 0;
+        restartButton.SetActive(false);  // Прячем кнопку рестарта
+        Time.timeScale = 0;              // Игра на паузе до начала
     }
     private void Update()
     {
         if (player.isDead)
         {
-            gameOverCountdown.gameObject.SetActive(true);
-            countTimer -= Time.unscaledDeltaTime;
-        }
-        gameOverCountdown.text = "Restarting in " + (countTimer).ToString("0");
-        
-        if (countTimer < 0)
-        {
-            RestartGame();
+            ShowRestartButton();         // Показываем кнопку рестарта при смерти игрока
         }
     }
+    // Запуск игры
     public void StartGame()
     {
-        startButton.SetActive(false);
-        Time.timeScale = 1;
+        startButton.SetActive(false);    // Убираем кнопку старта
+        Time.timeScale = 1;              // Запускаем игровой процесс
     }
+
+    // Обработка окончания игры
     public void GameOver()
     {
-        Time.timeScale = 0;
+        Time.timeScale = 0;              // Останавливаем время
     }
+
+    // Показ кнопки рестарта
+    private void ShowRestartButton()
+    {
+        restartButton.SetActive(true);   // Делаем кнопку рестарта видимой
+    }
+
+    // Перезапуск сцены (привязывается к кнопке рестарта)
     public void RestartGame()
     {
-        EditorSceneManager.LoadScene(0);
+        EditorSceneManager.LoadScene(0); // Перезагружаем сцену
     }
 }
 
